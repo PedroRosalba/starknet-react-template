@@ -8,10 +8,14 @@ import {
   argent,
   braavos,
   useInjectedConnectors,
-  voyager
+  voyager,
+  infuraProvider,
 } from "@starknet-react/core";
  
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
+  const apiKey = process.env.INFURA_API_KEY as string;
+  const provider = infuraProvider({apiKey});
+
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
     recommended: [
@@ -23,11 +27,14 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
     // Randomize the order of the connectors.
     order: "random"
   });
- 
+  
   return (
     <StarknetConfig
       chains={[mainnet, sepolia]}
-      provider={publicProvider()}
+      provider={
+        // publicProvider()
+        provider
+      }
       connectors={connectors}
       explorer={voyager}
     >
